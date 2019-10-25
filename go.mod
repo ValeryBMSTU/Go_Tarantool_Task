@@ -5,5 +5,8 @@ go 1.13
 require (
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0 // indirect
+	github.com/tarantool/go-tarantool v0.0.0-20190724152954-a23ca0eac539
 	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550 // indirect
+	google.golang.org/appengine v1.6.5 // indirect
+	gopkg.in/vmihailenco/msgpack.v2 v2.9.1 // indirect
 )

@@ -6,10 +6,10 @@ import (
 )
 
 type Usecase struct {
-	PRepository repository.IRepository
+	Repository repository.IRepository
 	Mu          *sync.Mutex
 }
 
 type IUsecase interface {
-
+	
 }
