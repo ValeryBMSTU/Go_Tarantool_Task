@@ -34,6 +34,10 @@ func (rep *Repository) Select(key string) (Resp interface{}, Err error) {
 		return models.KeyValue{}, err
 	}
 
+	if len(resp.Data) == 0 {
+		return models.KeyValue{}, tarantool.Error{Code: 4, Msg: "key not found"}
+	}
+
 	return resp.Data[0], nil
 }
 
@@ -42,6 +46,11 @@ func (rep *Repository) Delete(key string) (Resp interface{}, Err error) {
 	if err != nil {
 		return models.KeyValue{}, err
 	}
+
+	if len(resp.Data) == 0 {
+		return models.KeyValue{}, tarantool.Error{Code: 4, Msg: "key not found"}
+	}
+
 
 	return resp.Data[0], nil
 }
@@ -52,6 +61,11 @@ func (rep *Repository) Update(keyValue models.PostKeyValue) (Resp interface{}, E
 	if err != nil {
 		return models.KeyValue{}, err
 	}
+
+	if len(resp.Data) == 0 {
+		return models.KeyValue{}, tarantool.Error{Code: 4, Msg: "key not found"}
+	}
+
 
 	return resp.Data[0], nil
 }
