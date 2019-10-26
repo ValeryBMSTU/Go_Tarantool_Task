@@ -22,23 +22,11 @@ func (rep *Repository) NewRepository() error {
 func (rep *Repository) Insert(keyValue models.PostKeyValue) (Resp interface{}, Err error) {
 	value, _ := json.Marshal(keyValue.Value)
 
-	var temp interface{}
-	_ = json.Unmarshal(value, &temp)
-	println(temp)
-
 	resp, err := rep.tar.Insert("test",
 		[]interface{}{keyValue.Key, string(value)})
 	if err != nil {
 		return models.KeyValue{}, err
 	}
-
-	str2 := string(value)
-	_ = json.Unmarshal([]byte(str2), &temp)
-	println(temp)
-
-	str3 := `{"2321r":"kmefqwe","werwqf":"dferfewe"}`
-	_ = json.Unmarshal([]byte(str3), &temp)
-	println(temp)
 
 	return resp.Data[0], nil
 }
@@ -71,8 +59,10 @@ func (rep *Repository) Delete(key string) (Resp interface{}, Err error) {
 }
 
 func (rep *Repository) Update(keyValue models.PostKeyValue) (Resp interface{}, Err error) {
+	value, _ := json.Marshal(keyValue.Value)
+
 	resp, err := rep.tar.Update("test", "primary", []interface{}{keyValue.Key},
-		[]interface{}{[]interface{}{"=", 1, keyValue.Value}})
+		[]interface{}{[]interface{}{"=", 1, string(value)}})
 	if err != nil {
 		return models.KeyValue{}, err
 	}

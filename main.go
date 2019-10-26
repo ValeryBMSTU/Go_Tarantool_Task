@@ -16,7 +16,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{Format: "${time_rfc3339}, method = ${method}, uri = ${uri}, status = ${status}, remote_ip = ${remote_ip}\n"}))
 	e.Use(customMiddlewares.PanicMiddleware)
-	e.HTTPErrorHandler = customMiddlewares.CustomHTTPErrorHandler
+	e.HTTPErrorHandler = customMiddlewares.CustomErrorHandler
 
 	rep := repository.Repository{}
 	err := rep.NewRepository()

@@ -19,7 +19,7 @@ func PanicMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-func CustomHTTPErrorHandler(err error, ctx echo.Context) {
+func CustomErrorHandler(err error, ctx echo.Context) {
 	var jsonError error
 	switch err := errors.Cause(err); err.(type) {
 	case *echo.HTTPError:

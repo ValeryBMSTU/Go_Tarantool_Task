@@ -19,29 +19,7 @@ func (use *Usecase) AddKeyValue(KeyValue models.PostKeyValue) (models.OutKeyValu
 		return models.OutKeyValue{}, err
 	}
 
-	resList, ok := res.([]interface{})
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-	key, ok := resList[0].(string)
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-
-	///
-	value, ok := resList[1].(string)
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-
-	var temp interface{}
-	str2 := string(value)
-	_ = json.Unmarshal([]byte(str2), &temp)
-	println(temp)
-
-	var outKeyValue models.OutKeyValue
-	outKeyValue.Key = key
-	outKeyValue.Value = temp
+	outKeyValue, err := use.Cast(res)
 
 	return outKeyValue, nil
 }
@@ -53,22 +31,7 @@ func (use *Usecase) GetValue(Key string) (models.OutKeyValue, error) {
 		return models.OutKeyValue{}, err
 	}
 
-	resList, ok := res.([]interface{})
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-	key, ok := resList[0].(string)
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-	value := resList[1].(interface{})
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-
-	var outKeyValue models.OutKeyValue
-	outKeyValue.Key = key
-	outKeyValue.Value = value
+	outKeyValue, err := use.Cast(res)
 
 	return outKeyValue, nil
 }
@@ -79,22 +42,7 @@ func (use *Usecase) Delete(Key string) (models.OutKeyValue, error) {
 		return models.OutKeyValue{}, err
 	}
 
-	resList, ok := res.([]interface{})
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in Set")
-	}
-	key, ok := resList[0].(string)
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-	value := resList[1].(interface{})
-	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
-	}
-
-	var outKeyValue models.OutKeyValue
-	outKeyValue.Key = key
-	outKeyValue.Value = value
+	outKeyValue, err := use.Cast(res)
 
 	return outKeyValue, nil
 }
@@ -105,18 +53,29 @@ func (use *Usecase) Set(keyValue models.PostKeyValue) (models.OutKeyValue, error
 		return models.OutKeyValue{}, err
 	}
 
-	resList, ok := res.([]interface{})
+	outKeyValue, err := use.Cast(res)
+
+	return outKeyValue, nil
+}
+
+func (use *Usecase) Cast(keyValue interface{}) (models.OutKeyValue, error) {
+	resList, ok := keyValue.([]interface{})
 	if !ok {
-		return models.OutKeyValue{}, errors.New("incorrect res in Set")
+		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
 	}
 	key, ok := resList[0].(string)
 	if !ok {
 		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
 	}
-	value := resList[1].(interface{})
+
+	///
+	tempValue, ok := resList[1].(string)
 	if !ok {
 		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
 	}
+
+	var value interface{}
+	_ = json.Unmarshal([]byte(tempValue), &value)
 
 	var outKeyValue models.OutKeyValue
 	outKeyValue.Key = key
@@ -124,3 +83,4 @@ func (use *Usecase) Set(keyValue models.PostKeyValue) (models.OutKeyValue, error
 
 	return outKeyValue, nil
 }
+
