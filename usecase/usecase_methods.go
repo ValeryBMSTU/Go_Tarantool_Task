@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/ValeryBMSTU/Go_Tarantool_Task/models"
 	"github.com/ValeryBMSTU/Go_Tarantool_Task/repository"
@@ -26,14 +27,21 @@ func (use *Usecase) AddKeyValue(KeyValue models.PostKeyValue) (models.OutKeyValu
 	if !ok {
 		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
 	}
-	value := resList[1].(interface{})
+
+	///
+	value, ok := resList[1].(string)
 	if !ok {
 		return models.OutKeyValue{}, errors.New("incorrect res in GetValue")
 	}
 
+	var temp interface{}
+	str2 := string(value)
+	_ = json.Unmarshal([]byte(str2), &temp)
+	println(temp)
+
 	var outKeyValue models.OutKeyValue
 	outKeyValue.Key = key
-	outKeyValue.Value = value
+	outKeyValue.Value = temp
 
 	return outKeyValue, nil
 }
