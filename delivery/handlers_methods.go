@@ -24,6 +24,7 @@ func (h *Handlers) PostKeyValue (ctx echo.Context) (Err error) {
 			Err = errors.Wrap(Err, bodyErr.Error())
 		}
 	}()
+	ctx.Response().Header().Set("Content-Type", "application/json")
 
 	decoder := json.NewDecoder(ctx.Request().Body)
 	newKeyValue := new(models.PostKeyValue)
@@ -50,6 +51,7 @@ func (h *Handlers) GetKeyValue (ctx echo.Context) (Err error) {
 			Err = errors.Wrap(Err, bodyErr.Error())
 		}
 	}()
+	ctx.Response().Header().Set("Content-Type", "application/json")
 
 	key := ctx.Param("id")
 
@@ -72,6 +74,7 @@ func (h *Handlers) DeleteKeyValue (ctx echo.Context) (Err error) {
 			Err = errors.Wrap(Err, bodyErr.Error())
 		}
 	}()
+	ctx.Response().Header().Set("Content-Type", "application/json")
 
 	key := ctx.Param("id")
 
@@ -94,6 +97,7 @@ func (h *Handlers) PutKeyValue (ctx echo.Context) (Err error) {
 			Err = errors.Wrap(Err, bodyErr.Error())
 		}
 	}()
+	ctx.Response().Header().Set("Content-Type", "application/json")
 
 	key := ctx.Param("id")
 
